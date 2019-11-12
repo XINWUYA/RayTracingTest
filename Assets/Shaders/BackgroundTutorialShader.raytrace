@@ -1,0 +1,34 @@
+﻿#pragma max_recursion_depth 1
+
+RWTexture2D<float4> _RenderTarget;
+
+float4x4 _InvCameraViewProj;
+float3 _WorldSpaceCameraPos;
+float _CameraFarDistance;
+
+inline void GenCameraRay(out float3 voOrigin, out float3 voDirection)
+{
+	float2 DispatchIdx = DispatchRaysIndex().xy + 0.5f;//四舍五入
+	float2 ScreenPos = (DispatchIdx / DispatchRaysDimensions().xy) * 2.0f - 1.0f;
+	float4 WorldPos = mul(_InvCameraViewProj, float4(ScreenPos, 0.0f, 1.0f));
+
+	WorldPos.xyz /= WorldPos.w;
+
+	voOrigin = _WorldSpaceCameraPos.xyz;
+	voDirection = normalize(WorldPos.xyz - voOrigin);
+}
+
+inline float3 Color(float3 vOrigin, float3 vDirection)
+{
+	float t = 0.5f * (vDirection.y + 1.0f);
+	return (1.0f - t) * float3(1.0f, 1.0f, 1.0f) + t * float3(0.5f, 0.7f, 1.0f);
+}
+
+[shader("raygeneration")]
+void BackgroundRaygenShader()
+{
+    const uint2 DispatchIdx = DispatchRaysIndex().xy;
+	float3 Origin, Direction;
+	GenCameraRay(Origin, Direction);
+    _RenderTarget[DispatchIdx] = float4(Color(Origin, Direction), 1.0f);
+}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 339b82d3af9255f469e17abb32df79fb, type: 3}
-  m_Name: RayTracingRenderPipelineAsset
+  m_Name: 2_BackgroundRayTracingRenderPipelineAsset
   m_EditorClassIdentifier: 
-  _rayTracingTutorialAsset: {fileID: 11400000, guid: bced466fb2c702f4786f1f62c870f09e,
+  _rayTracingTutorialAsset: {fileID: 11400000, guid: 4879bbc15024fd749b1d933ae21ddef5,
     type: 2}

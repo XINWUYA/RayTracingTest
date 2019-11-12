@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcb58627efc4fdf4ca938dc9f4774acc, type: 3}
-  m_Name: OutputColorTutorialAsset
+  m_Script: {fileID: 11500000, guid: 89c45f3896239ed42aa7223c3b9ada53, type: 3}
+  m_Name: 2_BackgroundTutorialAsset
   m_EditorClassIdentifier: 
-  _rayTracingShader: {fileID: 4807578003741378534, guid: 5263e5278b125074e823c437fa72a277,
+  _rayTracingShader: {fileID: 4807578003741378534, guid: e55c1350925a80943ba284302db58a93,
     type: 3}
