@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb58627efc4fdf4ca938dc9f4774acc, type: 3}
+  m_Name: OutputColorTutorialAsset
+  m_EditorClassIdentifier: 
+  _rayTracingShader: {fileID: 4807578003741378534, guid: 5263e5278b125074e823c437fa72a277,
+    type: 3}
