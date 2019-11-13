@@ -13,3 +13,6 @@
 
 ![](img/2_BackgroundTutorialScene.png)
 
+### 3_AddASphereTutorialScene
+
+![](img/3_AddASphereTutorialScene.png)

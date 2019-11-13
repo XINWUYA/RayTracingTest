@@ -1,0 +1,47 @@
+﻿#pragma max_recursion_depth 1
+
+RWTexture2D<float4> _RenderTarget;
+
+#include "Common/Common.hlsl"
+
+inline float3 BackgroundColor(float3 vOrigin, float3 vDirection)
+{
+	float t = 0.5f * (vDirection.y + 1.0f);
+	return (1.0f - t) * float3(1.0f, 1.0f, 1.0f) + t * float3(0.5f, 0.7f, 1.0f);
+}
+
+[shader("raygeneration")]
+void AddASphereRaygenShader()
+{
+    const uint2 DispatchIdx = DispatchRaysIndex().xy;
+    
+    float3 Origin, Direction;
+    GenCameraRay(Origin, Direction);
+
+    RayDesc RayDescriptor;
+    RayDescriptor.Origin = Origin;
+    RayDescriptor.Direction = Direction;
+    RayDescriptor.TMin = 1e-5f;
+    RayDescriptor.TMax = _CameraFarDistance;
+
+    RayIntersection RayInt;
+    RayInt.color = float4(0.0f, 1.0f, 0.0f, 0.0f);
+    
+    TraceRay(_AccelerationStructure, RAY_FLAG_CULL_BACK_FACING_TRIANGLES, 0xFF, 0, 1, 0, RayDescriptor, RayInt);
+    
+    _RenderTarget[DispatchIdx] = RayInt.color;
+}
+
+[shader("miss")]
+void MissShader(inout RayIntersection rayIntersection : SV_RayPayload)
+{
+	float3 Origin = WorldRayOrigin();
+	float3 Direction = WorldRayDirection();
+	rayIntersection.color = float4(BackgroundColor(Origin, Direction), 1.0f);
+}
+
+[shader("anyhit")]
+void AnyHitShader(inout RayIntersection rayIntersection : SV_RayPayload, AttributeData attributeData : SV_IntersectionAttributes)
+{
+  AcceptHitAndEndSearch();
+}
