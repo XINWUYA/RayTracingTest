@@ -10,6 +10,7 @@ RaytracingAccelerationStructure _AccelerationStructure;
 
 struct RayIntersection
 {
+	uint4 PRNGStates;
 	float4 color;
 };
 
@@ -28,4 +29,16 @@ inline void GenCameraRay(out float3 voOrigin, out float3 voDirection)
 
 	voOrigin = _WorldSpaceCameraPos.xyz;
 	voDirection = normalize(WorldPos.xyz - voOrigin);
+}
+
+inline void GenCameraRayWithOffset(out float3 voOrigin, out float3 voDirection, float2 vOffset)
+{
+    float2 DispatchIdx = DispatchRaysIndex().xy + vOffset;
+    float2 ScreenPos = (DispatchIdx / DispatchRaysDimensions().xy) * 2.0f - 1.0f;
+    float4 WorldPos = mul(_InvCameraViewProj, float4(ScreenPos, 0.0f, 1.0f));
+
+    WorldPos.xyz /= WorldPos.w;
+
+    voOrigin = _WorldSpaceCameraPos.xyz;
+    voDirection = normalize(WorldPos.xyz - voOrigin);
 }

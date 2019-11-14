@@ -18,7 +18,7 @@ public abstract class RayTracingTutorial
     protected RayTracingShader _rayTracingShader;
     protected RayTracingRenderPipeline _rayTracingRenderPipeline;
     protected readonly int _renderTargetShaderId = Shader.PropertyToID("_RenderTarget");
-    protected readonly int _renderTargetSizeShaderID = Shader.PropertyToID("_RenderTargetSize");
+    protected readonly int _renderTargetSizeShaderId = Shader.PropertyToID("_RenderTargetSize");
 
     protected RayTracingTutorial(RayTracingTutorialAsset vAsset)
     {

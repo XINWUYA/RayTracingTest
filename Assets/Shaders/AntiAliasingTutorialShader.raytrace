@@ -1,0 +1,61 @@
+﻿#pragma max_recursion_depth 1
+
+RWTexture2D<float4> _RenderTarget;
+float4 _RenderTargetSize;
+int _FrameIndex;
+
+#include "Common/Common.hlsl"
+#include "Common/PRNG.hlsl"
+
+inline float3 BackgroundColor(float3 vOrigin, float3 vDirection)
+{
+	float t = 0.5f * (vDirection.y + 1.0f);
+	return (1.0f - t) * float3(0.7f, 0.9f, 1.0f) + t * float3(0.5f, 0.7f, 1.0f);
+}
+
+[shader("raygeneration")]
+void AntiAliasingRaygenShader()
+{
+    const uint2 DispatchIdx = DispatchRaysIndex().xy;
+	const uint PRNGIndex = DispatchIdx.y * (int)_RenderTargetSize.x + DispatchIdx.x;
+	uint4 PRNGStates = _PRNGStates[PRNGIndex];
+
+	float4 FinalColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	float3 Origin, Direction;
+	float2 Offset = float2(GetRandomValue(PRNGStates), GetRandomValue(PRNGStates));
+	GenCameraRayWithOffset(Origin, Direction, Offset);
+
+	RayDesc RayDescriptor;
+	RayDescriptor.Origin = Origin;
+	RayDescriptor.Direction = Direction;
+	RayDescriptor.TMin = 1e-5f;
+	RayDescriptor.TMax = _CameraFarDistance;
+
+	RayIntersection RayInt;
+	RayInt.PRNGStates = PRNGStates;
+	RayInt.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	TraceRay(_AccelerationStructure, RAY_FLAG_CULL_BACK_FACING_TRIANGLES, 0xFF, 0, 1, 0, RayDescriptor, RayInt);
+	PRNGStates = RayInt.PRNGStates;
+	FinalColor += RayInt.color;
+	FinalColor = float4(sqrt(FinalColor.r), sqrt(FinalColor.g), sqrt(FinalColor.b), FinalColor.a);
+	
+	_PRNGStates[PRNGIndex] = PRNGStates;
+
+	if(_FrameIndex > 1)
+	{
+		float a = 1.0f / (float)_FrameIndex;
+		FinalColor = _RenderTarget[DispatchIdx] * (1.0f - a) + FinalColor * a;
+	}
+   
+    _RenderTarget[DispatchIdx] = FinalColor;
+}
+
+[shader("miss")]
+void MissShader(inout RayIntersection rayIntersection : SV_RayPayload)
+{
+	float3 Origin = WorldRayOrigin();
+	float3 Direction = WorldRayDirection();
+	rayIntersection.color = float4(BackgroundColor(Origin, Direction), 1.0f);
+}
