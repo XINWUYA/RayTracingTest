@@ -1,4 +1,4 @@
-﻿#pragma max_recursion_depth 1
+﻿#pragma max_recursion_depth 11
 
 RWTexture2D<float4> _RenderTarget;
 float4 _RenderTargetSize;
@@ -6,6 +6,8 @@ int _FrameIndex;
 
 #include "Common/Common.hlsl"
 #include "Common/PRNG.hlsl"
+
+#define MAX_DEPTH (10)
 
 inline float3 BackgroundColor(float3 vOrigin, float3 vDirection)
 {
@@ -33,6 +35,7 @@ void AntiAliasingRaygenShader()
 	RayDescriptor.TMax = _CameraFarDistance;
 
 	RayIntersection RayInt;
+	RayInt.remainingDepth = MAX_DEPTH - 1;
 	RayInt.PRNGStates = PRNGStates;
 	RayInt.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 

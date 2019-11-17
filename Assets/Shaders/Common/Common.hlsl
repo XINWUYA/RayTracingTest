@@ -10,6 +10,7 @@ RaytracingAccelerationStructure _AccelerationStructure;
 
 struct RayIntersection
 {
+    int remainingDepth;
 	uint4 PRNGStates;
 	float4 color;
 };
