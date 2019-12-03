@@ -17,3 +17,19 @@
 
 ![](img/3_AddASphereTutorialScene.png)
 
+### 4_SurfaceNormalTutorialScene
+
+![](img/4_SurfaceNormalTutorialScene.png)
+
+### 5_AntiAliasingTutorialScene
+
+![](img/5_AntiAliasingTutorialScene.png)
+
+### 6_DiffuseMaterialTutorialScene
+
+![](img/6_DiffuseMaterialTutorialScene.png)
+
+### 7_DielectricsTutorialScene
+
+![](img/7_DielectricsTutorialScene.png)
+
